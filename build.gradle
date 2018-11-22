@@ -1,5 +1,5 @@
 apply plugin: 'java'
-
+apply plugin: 'jacoco'
 repositories {
     mavenCentral()
 }
@@ -13,4 +13,19 @@ test {
     onlyIf { task ->
         compileJava.didWork
     }
+	    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+    }
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacoco/jacocoHtml")
+    }
+}
+
+jacocoTestReport.dependsOn(test)
+jar.dependsOn(jacocoTestReport)

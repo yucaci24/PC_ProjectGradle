@@ -13,19 +13,10 @@ test {
     onlyIf { task ->
         compileJava.didWork
     }
-	    jacoco {
-        append = false
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-    }
 }
 
 jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination file("${buildDir}/jacoco/jacocoHtml")
-    }
+    reports {xml.enabled true}
 }
 
-jacocoTestReport.dependsOn(test)
-jar.dependsOn(jacocoTestReport)
+test.finalizedBy(jacocoTestReport)
